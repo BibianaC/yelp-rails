@@ -48,7 +48,7 @@ group :test do
   gem 'capybara'
 end
 
-gem 'haml'
+gem 'haml-rails'
 
 
 
