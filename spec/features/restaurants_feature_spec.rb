@@ -25,7 +25,17 @@ feature 'restaurants' do
   end
 
   context 'creating restaurants' do
+    before do
+      visit('/')
+      click_link('Sign up')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      fill_in('Password confirmation', with: 'testtest')
+      click_button('Sign up')
+    end
     scenario 'prompt user to fill out a form, then displays the new restaurant' do
+      visit '/'
+      click_link 'Add a restaurant'
       visit '/restaurants'
       click_link 'Add a restaurant'
       fill_in 'Name', with: 'KFC'
@@ -63,6 +73,15 @@ feature 'restaurants' do
 
     before {Restaurant.create name: 'KFC'}
 
+    before do
+      visit('/')
+      click_link('Sign up')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      fill_in('Password confirmation', with: 'testtest')
+      click_button('Sign up')
+    end
+
     scenario 'let a user edit a restaurant' do
       visit '/restaurants'
       click_link 'Edit KFC'
@@ -77,6 +96,15 @@ feature 'restaurants' do
   context 'deleting restaurants' do
 
     before { Restaurant.create name:'KFC'}
+
+    before do
+      visit('/')
+      click_link('Sign up')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      fill_in('Password confirmation', with: 'testtest')
+      click_button('Sign up')
+    end
 
     scenario 'removes a restaurant when a user clicks a delete link' do
       visit '/restaurants'

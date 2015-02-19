@@ -11,6 +11,13 @@ context 'user not signed in and on the homepage' do
     visit('/')
     expect(page).not_to have_link('Sign out')
   end
+
+  it "should not be able to add a restaurant" do
+    visit('/')
+    click_link('Add a restaurant')
+    expect(current_path).to eq '/users/sign_in'
+  end
+
 end
 
 context "user signed in on the homepage" do
