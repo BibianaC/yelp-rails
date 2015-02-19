@@ -41,3 +41,39 @@ context "user signed in on the homepage" do
     expect(page).not_to have_link('Sign up')
   end
 end
+
+context "user edit and delete restaurants" do
+
+  before(:each) do
+    visit('/')
+    click_link('Sign up')
+    fill_in('Email', with: 'test1@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+    visit '/restaurants'
+    click_link('Add a restaurant')
+    fill_in 'Name', with: 'KFC'
+    click_button 'Create Restaurant'
+    click_link('Sign out')
+  end
+
+  it 'should not be able to delete a restaurant it did not create' do
+    visit '/'
+    click_link('Sign up')
+    fill_in('Email', with: 'test2@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+    click_link('Delete KFC')
+    expect(page).to have_content('Error: You must be the author to delete a review')
+  end
+
+end
+
+
+
+
+
+
+

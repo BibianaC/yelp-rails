@@ -11,7 +11,8 @@ class RestaurantsController < ApplicationController
   end
 
   def create
-    @restaurant = Restaurant.create(restaurants_params)
+    @user = User.find(current_user)
+    @restaurant = @user.restaurants.new(restaurants_params)
     if @restaurant.save
       redirect_to restaurants_path
     else
@@ -36,8 +37,14 @@ class RestaurantsController < ApplicationController
 
   def destroy
     @restaurant = Restaurant.find(params[:id])
-    @restaurant.destroy
-    flash[:notice] = 'Restaurant deleted successfully'
+    p @restaurant
+    p current_user
+    if !current_user.restaurants.find_by id: @restaurant.id
+      flash.notice ="Error: You must be the author to delete a review" 
+    else 
+      @restaurant.destroy
+      flash[:notice] = 'Restaurant deleted successfully'
+    end
     redirect_to '/restaurants'
   end
 
