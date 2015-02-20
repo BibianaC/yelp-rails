@@ -3,7 +3,9 @@ require 'rails_helper'
 context 'user not signed in and on the homepage' do
 
   before do
-    Restaurant.create(name: 'KFC')
+    user = User.new(email: 'test@example.com', password: 'testtest', password_confirmation: 'testtest')
+    user.save
+    user.restaurants.create name: 'KFC'
   end
 
   it "should see a 'sign in' link and a 'sign up' link" do
@@ -27,6 +29,21 @@ context 'user not signed in and on the homepage' do
     visit('/restaurants')
     click_link('Review KFC')
     expect(current_path).to eq '/users/sign_in'
+  end
+
+  it "should not be able to delete a review" do
+    visit('restaurants')
+    click_link('Sign in')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    click_button('Log in')
+    click_link 'Review KFC'
+    fill_in "Thoughts", with: "so so"
+    select '3', from: 'Rating'
+    click_button 'Leave Review'
+    click_link('Sign out')
+    click_link('Delete Review')
+    expect(page).to have_content 'You cannot delete a review without being logged in'
   end
 
 end
