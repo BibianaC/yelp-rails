@@ -2,7 +2,6 @@ require 'rails_helper'
 
 feature 'restaurants' do
 
-  
   context 'no restaurants have been added' do
 
     scenario 'should display a prompt to add a restaurant' do
@@ -36,22 +35,14 @@ feature 'restaurants' do
     end
 
     scenario 'prompt user to fill out a form, then displays the new restaurant' do
-      visit '/'
-      click_link 'Add a restaurant'
-      visit '/restaurants'
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'KFC'
-      click_button 'Create Restaurant'
+      create_restaurant('KFC')
       expect(page).to have_content 'KFC'
       expect(current_path).to eq '/restaurants'
     end
 
     context 'an invalid restaurant' do
       it 'does not let you submit a name that is too short' do
-        visit '/restaurants'
-        click_link 'Add a restaurant'
-        fill_in 'Name', with: 'kf'
-        click_button 'Create Restaurant'
+        create_restaurant('kf')
         expect(page).not_to have_css 'h2', text: 'kf'
         expect(page).to have_content 'error'
       end
@@ -60,6 +51,7 @@ feature 'restaurants' do
   end
 
   context 'viewing restaurants' do
+
     let!(:kfc){ Restaurant.create(name:'KFC') }
 
     scenario 'lets a user view a restaurant' do
@@ -80,11 +72,7 @@ feature 'restaurants' do
     end
 
     scenario 'let a user edit a restaurant' do
-      visit '/restaurants'
-      click_link('Sign in')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      click_button('Log in')
+      sign_in('test@example.com', 'testtest')
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
       click_button 'Update Restaurant'
@@ -102,14 +90,8 @@ feature 'restaurants' do
       user.restaurants.create name: 'KFC'
     end
 
-
     scenario 'removes a restaurant when a user clicks a delete link' do
-      
-      visit '/restaurants'
-      click_link('Sign in')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      click_button('Log in')
+      sign_in('test@example.com', 'testtest')
       click_link 'Delete KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
     end

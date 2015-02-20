@@ -9,16 +9,8 @@ feature 'reviewing' do
   end
 
   scenario 'allows users to leave a review using a form' do
-    visit '/restaurants'
-    click_link('Sign in')
-    fill_in('Email', with: 'test@example.com')
-    fill_in('Password', with: 'testtest')
-    click_button('Log in')
-    click_link 'Review KFC'
-    fill_in "Thoughts", with: "so so"
-    select '3', from: 'Rating'
-    click_button 'Leave Review'
-
+    sign_in('test@example.com', 'testtest')
+    leave_review('so so', 3)
     expect(current_path).to eq '/restaurants'
     expect(page).to have_content('so so')
   end
