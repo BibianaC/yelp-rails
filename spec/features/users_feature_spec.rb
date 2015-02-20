@@ -77,7 +77,7 @@ context "user edit and delete restaurants" do
     fill_in('Password confirmation', with: 'testtest')
     click_button('Sign up')
     click_link('Delete KFC')
-    expect(page).to have_content('Error: You must be the author to delete a review')
+    expect(page).to have_content('Error: You must be the author to delete a restaurant')
   end
 
   it 'should not be able to edit a restaurant it did not create' do
@@ -88,7 +88,48 @@ context "user edit and delete restaurants" do
     fill_in('Password confirmation', with: 'testtest')
     click_button('Sign up')
     click_link('Edit KFC')
-    expect(page).to have_content('Error: You must be the author to edit a review')
+    expect(page).to have_content('Error: You must be the author to edit a restaurant')
+  end
+
+end
+
+context 'Reviews' do
+
+  before do
+    user = User.new(email: 'test@example.com', password: 'testtest', password_confirmation: 'testtest')
+    user.save
+    user.restaurants.create name: 'KFC'
+  end
+
+  it 'should be able to leave one review per restaurant' do
+    visit '/restaurants'
+    click_link('Sign in')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    click_button('Log in')
+    click_link 'Review KFC'
+    fill_in "Thoughts", with: "so so"
+    select '3', from: 'Rating'
+    click_button 'Leave Review'
+    visit '/restaurants'
+    click_link 'Review KFC'
+    expect(current_path).to eq '/restaurants'
+    expect(page).to have_content('You have already reviewed this restaurant')
+  end
+
+  it 'should be able to delete their own review' do
+    visit '/restaurants'
+    click_link('Sign in')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    click_button('Log in')
+    click_link 'Review KFC'
+    fill_in "Thoughts", with: "so so"
+    select '3', from: 'Rating'
+    click_button 'Leave Review'
+    visit '/restaurants'
+    click_link 'Delete Review'
+    expect(page).to have_content('Review deleted successfully')
   end
 
 end
