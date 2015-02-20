@@ -1,28 +1,22 @@
-== README
+# Yelp clone
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Recreate the Yelp Website for restaurant reviews
 
-Things you may want to cover:
+Introduction to Rails, User Authentication and OmniAuth.
 
-* Ruby version
+## Context
 
-* System dependencies
+Week 9 project at Makers Academy
 
-* Configuration
+## Resources
 
-* Database creation
+- Ruby
+- Rails
+- Devise Gem
+- Omniauth
+- ActiveRecord
 
-* Database initialization
+## Contributors
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+- Clint Pijuan
+- Bibiana Cristòfol
