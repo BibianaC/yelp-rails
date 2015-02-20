@@ -69,6 +69,17 @@ context "user edit and delete restaurants" do
     expect(page).to have_content('Error: You must be the author to delete a review')
   end
 
+  it 'should not be able to edit a restaurant it did not create' do
+    visit '/'
+    click_link('Sign up')
+    fill_in('Email', with: 'test2@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+    click_link('Edit KFC')
+    expect(page).to have_content('Error: You must be the author to edit a review')
+  end
+
 end
 
 

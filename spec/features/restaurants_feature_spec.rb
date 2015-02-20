@@ -73,19 +73,18 @@ feature 'restaurants' do
 
   context 'editing restaurants' do
 
-    before {Restaurant.create name: 'KFC'}
-
     before do
-      visit('/')
-      click_link('Sign up')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      fill_in('Password confirmation', with: 'testtest')
-      click_button('Sign up')
+      user = User.new(email: 'test@example.com', password: 'testtest', password_confirmation: 'testtest')
+      user.save
+      user.restaurants.create name: 'KFC'
     end
 
     scenario 'let a user edit a restaurant' do
       visit '/restaurants'
+      click_link('Sign in')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      click_button('Log in')
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
       click_button 'Update Restaurant'
@@ -97,7 +96,6 @@ feature 'restaurants' do
 
   context 'deleting restaurants' do
 
-    # let!(:user) { create_user }
     before do
       user = User.new(email: 'test@example.com', password: 'testtest', password_confirmation: 'testtest')
       user.save
