@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
   get 'restaurants' => 'restaurants#index'
-  resources :restaurants do
+  resources :restaurants, shallow: true do
     resources :reviews
+      resources :endorsements
   end
 
   # devise_scope :user do

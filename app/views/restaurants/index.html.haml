@@ -14,9 +14,10 @@
         - restaurant.reviews.each do |review|
           %li
             = review.thoughts
-            %strong= review.rating
-            %strong /5
-            = link_to "Delete Review", restaurant_review_path(restaurant, review), method: :delete
+            %strong= "#{review.rating}/5"
+            = link_to "Endorse review", restaurant_endorsements_path(restaurant)
+            %p= pluralize review.endorsements.count, 'endorsement'
+            = link_to "Delete Review", review_path(review), method: :delete
     - else
       %p No reviews.
 
