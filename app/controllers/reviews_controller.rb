@@ -1,7 +1,11 @@
 class ReviewsController < ApplicationController
   def new
     @restaurant = Restaurant.find(params[:restaurant_id])
-    @review = Review.new
+    if !current_user
+      redirect_to '/users/sign_in'
+    else
+      @review = Review.new
+    end
   end
 
   def create

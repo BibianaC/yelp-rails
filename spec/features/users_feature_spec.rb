@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 context 'user not signed in and on the homepage' do
+
+  before do
+    Restaurant.create(name: 'KFC')
+  end
+
   it "should see a 'sign in' link and a 'sign up' link" do
     visit('/')
     expect(page).to have_link('Sign in')
@@ -15,6 +20,12 @@ context 'user not signed in and on the homepage' do
   it "should not be able to add a restaurant" do
     visit('/')
     click_link('Add a restaurant')
+    expect(current_path).to eq '/users/sign_in'
+  end
+
+  it "should not be able to add a review" do
+    visit('/restaurants')
+    click_link('Review KFC')
     expect(current_path).to eq '/users/sign_in'
   end
 
@@ -81,6 +92,7 @@ context "user edit and delete restaurants" do
   end
 
 end
+
 
 
 
