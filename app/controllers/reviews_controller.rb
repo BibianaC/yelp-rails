@@ -23,7 +23,9 @@ class ReviewsController < ApplicationController
 
   def destroy
     @review = Review.find(params[:id])
-    if current_user.id != @review.user_id
+    if !current_user
+      flash[:notice] = "You cannot delete a review without being logged in"
+    elsif current_user.id != @review.user_id
       flash[:notice] = 'Error: You must be the author to delete a review'
     else
       @review.destroy

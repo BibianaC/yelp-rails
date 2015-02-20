@@ -98,6 +98,8 @@ context 'Reviews' do
   before do
     user = User.new(email: 'test@example.com', password: 'testtest', password_confirmation: 'testtest')
     user.save
+    user2 = User.new(email: 'test2@example.com', password: 'testtest', password_confirmation: 'testtest')
+    user2.save
     user.restaurants.create name: 'KFC'
   end
 
@@ -130,6 +132,26 @@ context 'Reviews' do
     visit '/restaurants'
     click_link 'Delete Review'
     expect(page).to have_content('Review deleted successfully')
+  end
+
+  it 'should not be able to delete a review that was created by someone else' do
+    visit '/restaurants'
+    click_link('Sign in')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    click_button('Log in')
+    click_link 'Review KFC'
+    fill_in "Thoughts", with: "so so"
+    select '3', from: 'Rating'
+    click_button 'Leave Review'
+    click_link('Sign out')
+    click_link('Sign in')
+    fill_in('Email', with: 'test2@example.com')
+    fill_in('Password', with: 'testtest')
+    click_button('Log in')
+    visit '/restaurants'
+    click_link 'Delete Review'
+    expect(page).to have_content('Error: You must be the author to delete a review')
   end
 
 end
