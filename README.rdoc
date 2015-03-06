@@ -12,7 +12,7 @@ Week 9 project at Makers Academy
 
 - Ruby
 - Rails
-- Devise Gem
+- Devise (Gem)
 - Omniauth
 - ActiveRecord
 
